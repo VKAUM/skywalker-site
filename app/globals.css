@@ -11,3 +11,9 @@ html, body {
   background: var(--bg-primary);
   color: white;
 }
+
+.reveal-line,
+.hero-cta,
+.hero-phone {
+  opacity: 0;
+}

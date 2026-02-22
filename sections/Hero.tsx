@@ -3,12 +3,14 @@
 import { useEffect, useRef } from "react"
 import Section from "@/components/Section"
 import { heroEntrance } from "@/lib/animations"
+import { useLayoutEffect } from "react"
+
 import gsap from "gsap"
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return
     heroEntrance(containerRef.current)
 
