@@ -1,19 +1,32 @@
+/* app/globals.css */
 @import "tailwindcss";
 
 :root {
   --bg-primary: #000000;
-  --bg-elevated: #111111;
-  --bg-surface: #0A0A0A;
+  --bg-elevated: #0A0A0A; /* Darker elevation for depth */
+  --bg-surface: #050505;
   --accent-primary: #FF6B2B;
 }
 
 html, body {
   background: var(--bg-primary);
   color: white;
+  overflow-x: hidden;
 }
 
-.reveal-line,
-.hero-cta,
-.hero-phone {
+/* Scanline overlay to mimic the Magic5 agency aesthetic */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.2;
+}
+
+.reveal-line, .hero-cta, .hero-phone, .attr-card {
   opacity: 0;
 }
