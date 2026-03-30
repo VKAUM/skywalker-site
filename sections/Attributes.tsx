@@ -4,81 +4,60 @@ import { useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
+import { ShootingIcon, DefenseIcon, DurabilityIcon, IQIcon } from "@/components/Icons/AttributeIcons"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const attributes = [
-  "Strength", "Speed", "Vertical", "Shooting", "Handles", 
-  "Passing", "Defense", "Agility", "Durability", "Game IQ"
+const attributesData = [
+  { name: "Shooting", icon: <ShootingIcon /> },
+  { name: "Defense", icon: <DefenseIcon /> },
+  { name: "Durability", icon: <DurabilityIcon /> },
+  { name: "Game IQ", icon: <IQIcon /> },
+  { name: "Vertical", icon: <ShootingIcon /> }, // Placeholder for now
 ]
 
 export default function Attributes() {
-  const section = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
+  const section = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section.current,
-        start: "top 80%", // Triggers early to prevent a "gap" in the flow
+        start: "top 80%",
         toggleActions: "play none none reverse",
       }
-    })
+    });
 
-    // Kinetic Reveal: Scale, Blur, and Snap
-    gsap.set(titleRef.current, { y: -30, opacity: 0, filter: "blur(10px)" })
-    gsap.set(".attr-word", { x: 50, opacity: 0, filter: "blur(15px)", scale: 1.1 })
+    gsap.set(titleRef.current, { y: -30, opacity: 0, filter: "blur(10px)" });
+    gsap.set(".attr-card", { y: 50, opacity: 0, scale: 0.9 });
 
-    tl.to(titleRef.current, { 
-      y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" 
-    })
-    .to(".attr-word", {
-      x: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-      scale: 1,
-      stagger: 0.05,
-      duration: 0.6,
-      ease: "expo.out"
-    }, "-=0.5")
-
-  }, { scope: section })
+    tl.to(titleRef.current, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8 })
+      .to(".attr-card", { y: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.8, ease: "expo.out" }, "-=0.4");
+  }, { scope: section });
 
   return (
-    // Removed all background layers to fix the overlap issue
-    <section 
-      ref={section} 
-      className="relative min-h-screen w-full flex flex-col items-center justify-center py-32 bg-transparent"
-    >
-      <div className="relative z-30 w-full max-w-7xl px-6">
-        
-        {/* TITLE: Master Your Attributes */}
-        <h2 
-          ref={titleRef}
-          className="text-white text-5xl md:text-8xl font-black italic tracking-tighter uppercase mb-24 text-center leading-none"
-          style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-        >
+    <section ref={section} className="relative min-h-screen w-full flex flex-col items-center justify-center py-32 bg-transparent z-30">
+      <div className="w-full max-w-7xl px-6">
+        <h2 ref={titleRef} className="text-white text-5xl md:text-8xl font-black italic tracking-tighter uppercase mb-24 text-center leading-none">
           Master Your <span className="text-[#FF6B2B]">Attributes</span>
         </h2>
 
-        {/* FULL-WORD KINETIC LIST */}
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-12 md:gap-x-20 md:gap-y-16">
-          {attributes.map((word) => (
-            <div key={word} className="attr-word group cursor-pointer relative">
-              <span 
-                className="text-white/10 group-hover:text-white font-black text-4xl md:text-8xl italic tracking-tighter uppercase transition-all duration-300 block"
-                style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-              >
-                {word}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
+          {attributesData.map((attr) => (
+            <div key={attr.name} className="attr-card group flex flex-col items-center bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-sm hover:border-[#FF6B2B]/50 transition-all duration-300">
+              <div className="mb-6 transform group-hover:scale-110 transition-transform duration-500">
+                {attr.icon}
+              </div>
+              <span className="text-white font-black italic text-2xl uppercase tracking-tighter text-center">
+                {attr.name}
               </span>
-              {/* Minimalist technical accent */}
-              <div className="w-0 h-[3px] bg-[#FF6B2B] group-hover:w-full transition-all duration-500 mt-2 shadow-[0_0_15px_#FF6B2B]" />
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
-}   
+  );
+}
